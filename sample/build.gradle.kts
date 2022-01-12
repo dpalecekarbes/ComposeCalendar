@@ -34,6 +34,8 @@ dependencies {
   implementation(Compose.Material)
   implementation(Timber.Core)
 
+  implementation(Joda.JodaTime)
+
   debugImplementation(Debug.LeakCanary)
   debugImplementation(Debug.FoQA)
 }

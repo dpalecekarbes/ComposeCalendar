@@ -25,6 +25,7 @@ dependencies {
   implementation(Compose.FoundationLayout)
   implementation(Compose.Material)
   implementation(Timber.Core)
+  implementation(Joda.JodaTime)
 
   testImplementation(Kotest.Assertions)
   testImplementation(Kotest.RunnerJunit5)

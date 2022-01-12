@@ -20,11 +20,11 @@ import com.google.accompanist.pager.rememberPagerState
 import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
+import io.github.boguszpawlowski.composecalendar.util.DayOfWeek
 import io.github.boguszpawlowski.composecalendar.week.WeekContent
 import io.github.boguszpawlowski.composecalendar.week.getWeeks
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.YearMonth
+import org.joda.time.LocalDate
+import org.joda.time.YearMonth
 
 internal const val DaysOfWeek = 7
 

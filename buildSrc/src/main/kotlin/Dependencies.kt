@@ -29,6 +29,10 @@ object Kotlin {
   const val DesugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 }
 
+object Joda {
+  const val JodaTime = "net.danlew:android.joda:2.10.9.1"
+}
+
 object Android {
   const val GradlePlugin = "com.android.tools.build:gradle:7.0.3"
 

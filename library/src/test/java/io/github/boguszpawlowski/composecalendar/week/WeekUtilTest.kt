@@ -2,27 +2,28 @@
 
 package io.github.boguszpawlowski.composecalendar.week
 
+import io.github.boguszpawlowski.composecalendar.util.DayOfWeek
+import io.github.boguszpawlowski.composecalendar.util.atEndOfMonth
+import io.github.boguszpawlowski.composecalendar.util.lengthOfMonth
+import io.github.boguszpawlowski.composecalendar.util.ordinal
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
-import java.time.DayOfWeek.MONDAY
-import java.time.DayOfWeek.SATURDAY
-import java.time.DayOfWeek.SUNDAY
-import java.time.LocalDate
-import java.time.YearMonth
+import org.joda.time.YearMonth
+import org.joda.time.LocalDate
 
 internal class WeekUtilTest : ShouldSpec({
 
-  val month = YearMonth.of(2020, 9)
-  val previousMonth = YearMonth.of(2020, 8)
-  val nextMonth = YearMonth.of(2020, 10)
+  val month = YearMonth(2020, 9)
+  val previousMonth = YearMonth(2020, 8)
+  val nextMonth = YearMonth(2020, 10)
 
   context("Extracting weeks without adjacent months") {
     val includeAdjacentMonths = false
     should("return days only from current month") {
-      val weeks = month.getWeeks(includeAdjacentMonths, MONDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.MONDAY)
       val days = weeks.flatMap { it.days }
 
       days.map { it.date }.forEach {
@@ -33,17 +34,17 @@ internal class WeekUtilTest : ShouldSpec({
     }
 
     should("return all days from the month") {
-      val weeks = month.getWeeks(includeAdjacentMonths, MONDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.MONDAY)
       val days = weeks.flatMap { it.days }.map { it.date }
 
       val daysLength = month.lengthOfMonth()
-      val daysFromCurrentMonth = (1..daysLength).map { month.atDay(it) }
+      val daysFromCurrentMonth = (1..daysLength).map { month.toLocalDate(it) }
 
       days shouldContainExactly daysFromCurrentMonth
     }
 
     should("return days properly split to weeks") {
-      val weeks = month.getWeeks(includeAdjacentMonths, MONDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.MONDAY)
 
       weeks[0].days shouldHaveSize 6
       weeks[1].days shouldHaveSize 7
@@ -55,7 +56,7 @@ internal class WeekUtilTest : ShouldSpec({
     }
 
     should("return days properly split to weeks when first day is Saturday") {
-      val weeks = month.getWeeks(includeAdjacentMonths, SATURDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.SATURDAY)
 
       weeks[0].days shouldHaveSize 4
       weeks[1].days shouldHaveSize 7
@@ -67,7 +68,7 @@ internal class WeekUtilTest : ShouldSpec({
     }
 
     should("return days properly split to weeks when first day is Sunday ") {
-      val weeks = month.getWeeks(includeAdjacentMonths, SUNDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.SUNDAY)
 
       weeks[0].days shouldHaveSize 5
       weeks[1].days shouldHaveSize 7
@@ -82,7 +83,7 @@ internal class WeekUtilTest : ShouldSpec({
   context("Extracting weeks with adjacent months") {
     val includeAdjacentMonths = true
     should("return days from current and previous months") {
-      val weeks = month.getWeeks(includeAdjacentMonths, MONDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.MONDAY)
       val days = weeks.flatMap { it.days }
 
       days.map { it.date }.forEachIndexed { index, day ->
@@ -107,24 +108,24 @@ internal class WeekUtilTest : ShouldSpec({
     }
 
     should("return all days from the month") {
-      val weeks = month.getWeeks(includeAdjacentMonths, MONDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.MONDAY)
       val days = weeks.flatMap { it.days }.map { it.date }
 
       val daysLength = month.lengthOfMonth()
-      val endOffset = 6 - month.atEndOfMonth().dayOfWeek.ordinal
-      val startOffset = month.atDay(1).dayOfWeek.ordinal - 1
-      val daysFromCurrentMonth = (1..daysLength).map { month.atDay(it) }
-      val daysFromNextMonth = (1..endOffset).map { nextMonth.atDay(it) }
+      val endOffset = 6 - month.atEndOfMonth().dayOfWeek//.ordinal
+      val startOffset = month.toLocalDate(1).dayOfWeek.ordinal - 1
+      val daysFromCurrentMonth = (1..daysLength).map { month.toLocalDate(it) }
+      val daysFromNextMonth = (1..endOffset).map { nextMonth.toLocalDate(it) }
       val daysFromPreviousMonth =
         (previousMonth.lengthOfMonth() - startOffset..previousMonth.lengthOfMonth()).map {
-          previousMonth.atDay(it)
+          previousMonth.toLocalDate(it)
         }
 
       days shouldContainAll daysFromCurrentMonth + daysFromNextMonth + daysFromPreviousMonth
     }
 
     should("return days properly split to weeks") {
-      val weeks = month.getWeeks(includeAdjacentMonths, MONDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.MONDAY)
 
       weeks[0].days shouldHaveSize 7
       weeks[1].days shouldHaveSize 7
@@ -136,7 +137,7 @@ internal class WeekUtilTest : ShouldSpec({
     }
 
     should("return days properly split to weeks when first day is Sunday") {
-      val weeks = month.getWeeks(includeAdjacentMonths, SUNDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.SUNDAY)
 
       weeks[0].days shouldHaveSize 7
       weeks[1].days shouldHaveSize 7
@@ -148,7 +149,7 @@ internal class WeekUtilTest : ShouldSpec({
     }
 
     should("return days properly split to weeks when first day is Saturday") {
-      val weeks = month.getWeeks(includeAdjacentMonths, SATURDAY)
+      val weeks = month.getWeeks(includeAdjacentMonths, DayOfWeek.SATURDAY)
 
       weeks[0].days shouldHaveSize 7
       weeks[1].days shouldHaveSize 7
@@ -162,4 +163,4 @@ internal class WeekUtilTest : ShouldSpec({
 })
 
 private fun LocalDate.isFromMonth(yearMonth: YearMonth) =
-  month == yearMonth.month && year == yearMonth.year
+  monthOfYear == yearMonth.monthOfYear && year == yearMonth.year

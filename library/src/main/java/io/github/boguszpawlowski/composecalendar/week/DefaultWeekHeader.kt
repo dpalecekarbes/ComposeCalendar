@@ -6,9 +6,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import java.time.DayOfWeek
-import java.time.format.TextStyle.SHORT
-import java.util.Locale
+import io.github.boguszpawlowski.composecalendar.util.DayOfWeek
+import io.github.boguszpawlowski.composecalendar.util.getDisplayName
 
 @Composable
 public fun DefaultWeekHeader(
@@ -19,7 +18,7 @@ public fun DefaultWeekHeader(
     daysOfWeek.forEach { dayOfWeek ->
       Text(
         textAlign = TextAlign.Center,
-        text = dayOfWeek.getDisplayName(SHORT, Locale.ROOT),
+        text = dayOfWeek.getDisplayName(),
         modifier = modifier
           .weight(1f)
           .wrapContentHeight()

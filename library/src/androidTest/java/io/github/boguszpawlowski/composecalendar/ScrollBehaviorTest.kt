@@ -7,13 +7,13 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performGesture
 import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.test.swipeRight
+import org.joda.time.YearMonth
 import org.junit.Rule
 import org.junit.Test
-import java.time.YearMonth
 
 internal class ScrollBehaviorTest {
 
-  private val initialMonth = YearMonth.of(2012, 5)
+  private val initialMonth = YearMonth(2012, 5)
 
   @get:Rule
   val composeTestRule = createComposeRule()

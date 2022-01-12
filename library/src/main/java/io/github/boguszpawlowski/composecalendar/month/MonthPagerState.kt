@@ -18,7 +18,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.runningFold
-import java.time.YearMonth
+import org.joda.time.YearMonth
 
 private const val PageCount = 3
 
@@ -115,4 +115,4 @@ internal class MonthProvider(initialMonth: YearMonth, currentIndex: Int) {
 }
 
 private operator fun YearMonth.minus(other: YearMonth) =
-  year - other.year + month.value - other.month.value
+  year - other.year + monthOfYear - other.monthOfYear

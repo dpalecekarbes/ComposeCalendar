@@ -23,12 +23,11 @@ import io.github.boguszpawlowski.composecalendar.selection.DynamicSelectionState
 import io.github.boguszpawlowski.composecalendar.selection.EmptySelectionState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionMode
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
+import io.github.boguszpawlowski.composecalendar.util.DayOfWeek
 import io.github.boguszpawlowski.composecalendar.week.DefaultWeekHeader
 import io.github.boguszpawlowski.composecalendar.week.rotateRight
-import java.time.DayOfWeek
-import java.time.LocalDate
-import java.time.YearMonth
-import java.time.temporal.WeekFields
+import org.joda.time.LocalDate
+import org.joda.time.YearMonth
 import java.util.Locale
 
 /**
@@ -68,7 +67,7 @@ public class CalendarState<T : SelectionState>(
 @Composable
 public fun SelectableCalendar(
   modifier: Modifier = Modifier,
-  firstDayOfWeek: DayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek,
+  firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
   today: LocalDate = LocalDate.now(),
   showAdjacentMonths: Boolean = true,
   horizontalSwipeEnabled: Boolean = true,
@@ -119,7 +118,7 @@ public fun SelectableCalendar(
 @Composable
 public fun StaticCalendar(
   modifier: Modifier = Modifier,
-  firstDayOfWeek: DayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek,
+  firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
   today: LocalDate = LocalDate.now(),
   showAdjacentMonths: Boolean = true,
   horizontalSwipeEnabled: Boolean = true,
@@ -166,7 +165,7 @@ public fun StaticCalendar(
 public fun <T : SelectionState> Calendar(
   calendarState: CalendarState<T>,
   modifier: Modifier = Modifier,
-  firstDayOfWeek: DayOfWeek = WeekFields.of(Locale.getDefault()).firstDayOfWeek,
+  firstDayOfWeek: DayOfWeek = DayOfWeek.MONDAY,
   today: LocalDate = LocalDate.now(),
   showAdjacentMonths: Boolean = true,
   horizontalSwipeEnabled: Boolean = true,

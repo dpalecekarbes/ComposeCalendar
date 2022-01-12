@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
+import io.github.boguszpawlowski.composecalendar.util.monthName
 
 /**
  * Default implementation of month header, shows current month and year, as well as
@@ -44,7 +45,7 @@ public fun DefaultMonthHeader(
     }
     Text(
       modifier = Modifier.testTag("MonthLabel"),
-      text = monthState.currentMonth.month.name.lowercase().replaceFirstChar { it.titlecase() },
+      text = monthState.currentMonth.monthName().lowercase().replaceFirstChar { it.titlecase() },
       style = MaterialTheme.typography.h4
     )
     Spacer(modifier = Modifier.width(8.dp))

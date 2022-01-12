@@ -1,7 +1,7 @@
 package io.github.boguszpawlowski.composecalendar.day
 
 import androidx.compose.runtime.Immutable
-import java.time.LocalDate
+import org.joda.time.LocalDate
 
 @Immutable
 internal class WeekDay(

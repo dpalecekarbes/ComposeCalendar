@@ -25,17 +25,16 @@ import androidx.compose.ui.unit.dp
 import io.github.boguszpawlowski.composecalendar.StaticCalendar
 import io.github.boguszpawlowski.composecalendar.day.NonSelectableDayState
 import io.github.boguszpawlowski.composecalendar.header.MonthState
-import java.time.DayOfWeek
-import java.time.DayOfWeek.SUNDAY
-import java.time.format.TextStyle.NARROW
-import java.util.Locale
+import io.github.boguszpawlowski.composecalendar.util.DayOfWeek
+import io.github.boguszpawlowski.composecalendar.util.getDisplayName
+import io.github.boguszpawlowski.composecalendar.util.monthName
 
 @Composable
 fun CustomComponentsSample() {
   StaticCalendar(
     modifier = Modifier.animateContentSize(),
     showAdjacentMonths = false,
-    firstDayOfWeek = SUNDAY,
+    firstDayOfWeek = DayOfWeek.SUNDAY,
     monthContainer = { MonthContainer(it) },
     dayContent = { DayContent(dayState = it) },
     weekHeader = { WeekHeader(daysOfWeek = it) },
@@ -59,7 +58,7 @@ private fun WeekHeader(daysOfWeek: List<DayOfWeek>) {
     daysOfWeek.forEach { dayOfWeek ->
       Text(
         textAlign = TextAlign.Center,
-        text = dayOfWeek.getDisplayName(NARROW, Locale.ROOT),
+        text = dayOfWeek.getDisplayName(),
         modifier = Modifier
           .weight(1f)
           .wrapContentHeight()
@@ -72,7 +71,7 @@ private fun WeekHeader(daysOfWeek: List<DayOfWeek>) {
 private fun MonthHeader(monthState: MonthState) {
   Row {
     Text(monthState.currentMonth.year.toString(), style = MaterialTheme.typography.h3)
-    Text(monthState.currentMonth.month.name, style = MaterialTheme.typography.h3)
+    Text(monthState.currentMonth.monthName(), style = MaterialTheme.typography.h3)
     IconButton(onClick = { monthState.currentMonth = monthState.currentMonth.plusMonths(1) }) {
       Image(
         imageVector = Icons.Default.Star,

@@ -5,14 +5,15 @@ package io.github.boguszpawlowski.composecalendar.selection
 import io.kotest.core.spec.style.ShouldSpec
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import java.time.LocalDate
-import java.time.Month.APRIL
+import org.joda.time.LocalDate
+
+private const val APRIL = 4
 
 internal class SelectionStateTest : ShouldSpec({
 
-  val yesterday = LocalDate.of(2020, APRIL, 9)
-  val today = LocalDate.of(2020, APRIL, 10)
-  val tomorrow = LocalDate.of(2020, APRIL, 11)
+  val yesterday = LocalDate(2020, APRIL, 9)
+  val today = LocalDate(2020, APRIL, 10)
+  val tomorrow = LocalDate(2020, APRIL, 11)
 
   context("Selection state with SelectionMode.None") {
     should("not change selection after new value arrives") {
