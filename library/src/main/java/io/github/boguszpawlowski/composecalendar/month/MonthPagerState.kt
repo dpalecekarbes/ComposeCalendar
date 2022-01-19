@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.runningFold
 import org.joda.time.YearMonth
 
-private const val PageCount = 3
+internal const val PageCount = 3
 
 @OptIn(ExperimentalPagerApi::class)
 @Stable
@@ -30,10 +30,12 @@ internal class MonthPagerState(
   private val pagerState: PagerState,
 ) {
 
+  private val currentPage get() = pagerState.currentPage % PageCount
+
   private var monthProvider by mutableStateOf(
     MonthProvider(
       initialMonth = monthState.currentMonth,
-      currentIndex = pagerState.currentPage,
+      currentIndex = currentPage,
     )
   )
 
@@ -44,7 +46,7 @@ internal class MonthPagerState(
       moveToMonth(month)
     }.launchIn(coroutineScope)
 
-    snapshotFlow { pagerState.currentPage }.runningFold(1 to 1) { oldIndices, newIndex ->
+    snapshotFlow { currentPage }.runningFold(1 to 1) { oldIndices, newIndex ->
       oldIndices.second to newIndex
     }.distinctUntilChanged().onEach { (oldIndex, newIndex) ->
       onScrolled(oldIndex, newIndex)
@@ -54,8 +56,8 @@ internal class MonthPagerState(
 
   @SuppressLint("Range")
   private fun moveToMonth(month: YearMonth) {
-    if (month - getMonthForIndex(pagerState.currentPage) == 0) return
-    monthProvider = MonthProvider(monthState.currentMonth, pagerState.currentPage)
+    if (month - getMonthForIndex(currentPage) == 0) return
+    monthProvider = MonthProvider(monthState.currentMonth, currentPage)
   }
 
   private fun onScrolled(oldIndex: Int, newIndex: Int) {

@@ -41,7 +41,10 @@ internal fun <T : SelectionState> MonthPager(
   weekHeader: @Composable BoxScope.(List<DayOfWeek>) -> Unit,
   monthContainer: @Composable (content: @Composable (PaddingValues) -> Unit) -> Unit,
 ) {
-  val pagerState = rememberPagerState(initialPage = 1)
+  val lastPage = Int.MAX_VALUE
+  val startIndex = lastPage / 2
+
+  val pagerState = rememberPagerState(initialPage = startIndex)
   val coroutineScope = rememberCoroutineScope()
 
   val monthPagerState = remember {
@@ -53,11 +56,12 @@ internal fun <T : SelectionState> MonthPager(
   }
 
   HorizontalPager(
-    count = 3,
+    count = lastPage,
     modifier = modifier.testTag("MonthPager"),
     state = pagerState,
     verticalAlignment = Alignment.Top,
-  ) { pageIndex ->
+  ) { index ->
+    val pageIndex = (index - startIndex).floorMod(PageCount)
     MonthContent(
       showAdjacentMonths = showAdjacentMonths,
       selectionState = selectionState,
@@ -69,6 +73,11 @@ internal fun <T : SelectionState> MonthPager(
       monthContainer = monthContainer
     )
   }
+}
+
+private fun Int.floorMod(other: Int): Int = when (other) {
+  0 -> this
+  else -> this - floorDiv(other) * other
 }
 
 @OptIn(ExperimentalPagerApi::class)
