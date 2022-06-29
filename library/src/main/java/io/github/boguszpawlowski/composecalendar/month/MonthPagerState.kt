@@ -30,7 +30,7 @@ internal class MonthPagerState(
   private val pagerState: PagerState,
 ) {
 
-  private val currentPage get() = pagerState.currentPage % PageCount
+  private val currentPage get() = pagerState.currentPage.toIndex()
 
   private var monthProvider by mutableStateOf(
     MonthProvider(
