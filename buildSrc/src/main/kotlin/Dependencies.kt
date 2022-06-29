@@ -48,7 +48,7 @@ object GradleVersions {
 }
 
 object GrGit {
-  const val Version = "4.1.0"
+  const val Version = "4.0.2"
 
   const val PluginId = "org.ajoberstar.grgit"
 }
