@@ -67,7 +67,8 @@ internal fun <T : SelectionState> MonthPager(
       daysOfWeek = daysOfWeek,
       dayContent = dayContent,
       weekHeader = weekHeader,
-      monthContainer = monthContainer
+      monthContainer = monthContainer,
+      modifier = Modifier.testTag("dynamic-pager-${index.toIndex()}")
     )
   }
 }
