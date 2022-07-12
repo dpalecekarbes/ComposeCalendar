@@ -21,6 +21,7 @@ import io.github.boguszpawlowski.composecalendar.day.DayState
 import io.github.boguszpawlowski.composecalendar.header.MonthState
 import io.github.boguszpawlowski.composecalendar.selection.SelectionState
 import io.github.boguszpawlowski.composecalendar.util.DayOfWeek
+import io.github.boguszpawlowski.composecalendar.util.DynamicTestTags
 import io.github.boguszpawlowski.composecalendar.week.WeekContent
 import io.github.boguszpawlowski.composecalendar.week.getWeeks
 import org.joda.time.LocalDate
@@ -68,7 +69,7 @@ internal fun <T : SelectionState> MonthPager(
       dayContent = dayContent,
       weekHeader = weekHeader,
       monthContainer = monthContainer,
-      modifier = Modifier.testTag("dynamic-pager-${index.toIndex()}")
+      testTag = DynamicTestTags.getPageTag(index.toIndex()),
     )
   }
 }
@@ -92,11 +93,14 @@ internal fun <T : SelectionState> MonthContent(
   daysOfWeek: List<DayOfWeek>,
   today: LocalDate,
   modifier: Modifier = Modifier,
+  testTag: String? = null,
   dayContent: @Composable BoxScope.(DayState<T>) -> Unit,
   weekHeader: @Composable BoxScope.(List<DayOfWeek>) -> Unit,
   monthContainer: @Composable (content: @Composable (PaddingValues) -> Unit) -> Unit,
 ) {
-  Column {
+  Column(
+    modifier = testTag?.let { Modifier.testTag(it) } ?: Modifier
+  ) {
     Box(
       modifier = modifier
         .fillMaxWidth()
@@ -114,11 +118,12 @@ internal fun <T : SelectionState> MonthContent(
           includeAdjacentMonths = showAdjacentMonths,
           firstDayOfTheWeek = daysOfWeek.first(),
           today = today,
-        ).forEach { week ->
+        ).forEachIndexed { index, week ->
           WeekContent(
             week = week,
             selectionState = selectionState,
             dayContent = dayContent,
+            modifier = Modifier.testTag(DynamicTestTags.getWeekTag(index))
           )
         }
       }
